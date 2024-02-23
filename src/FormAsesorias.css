@@ -1,0 +1,48 @@
+.wrapp-form-asesorias {
+    padding: 72px 90px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 42px;
+}
+
+.form-asesorias {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 42px;
+}
+
+.text-head-group-radio {
+    font-family: 'Neue montreal';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.6px;
+    color: #3C4549;
+    letter-spacing: 2%;
+}
+
+.text-radio {
+    font-family: 'Neue montreal';
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.6px;
+    color: #3C4549;
+    letter-spacing: 2%;
+}
+
+.wrapp-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.head-master-form {
+    font-family: 'Neue montreal';
+    font-size: 30px;
+    font-weight: 500;
+    line-height: 36px;
+    color: #3C4549;
+    letter-spacing: 2%;
+    margin: 0;
+}

@@ -1,23 +1,22 @@
-import logo from './logo.svg';
+import logo from './logo-b360.svg';
+import { Sidebar } from './Sidebar';
 import './App.css';
+import { FormAsesorias } from './FormAsesorias';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='header-b360'>
+      <img src={logo} className="logo-app" alt="logo" />
+      </div>
+      <div className='wrapp-all-content'>
+      <Sidebar />
+      <FormAsesorias />
+
+      </div>
+      
+      
     </div>
   );
 }
