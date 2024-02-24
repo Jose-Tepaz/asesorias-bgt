@@ -1,8 +1,8 @@
-import { react } from '@babel/types';
+
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './FormAsesorias.css'
 import { Radio, Form, Button, Input } from 'antd';
+import { UploadFile } from './UploadFile';
 
 import {useState} from 'react';
 
@@ -71,6 +71,7 @@ function FormAsesorias () {
             </div>
             
 
+            <UploadFile />
 
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
                 <Button type="primary" htmlType="submit">
