@@ -1,0 +1,17 @@
+.card-upload {
+    background: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    padding: 16px 24px;
+    border-radius: 12px;
+}
+
+.wrapp-component-upload {
+    width: 187px;
+}
+
+:where(.css-dev-only-do-not-override-1xg9z9n).ant-upload-wrapper .ant-upload-drag .ant-upload {
+    padding: 0px!important;
+}

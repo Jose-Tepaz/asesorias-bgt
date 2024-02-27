@@ -3,7 +3,7 @@ import React from 'react';
 import './FormAsesorias.css'
 import { Radio, Form, Button, Input } from 'antd';
 import { UploadFile } from './UploadFile';
-
+import { Testupload } from './Testupload';
 import {useState} from 'react';
 
 function FormAsesorias () {
@@ -29,6 +29,9 @@ function FormAsesorias () {
             </div>
             <Form 
             className='form-asesorias'
+            onFinish={(values) => {
+                console.log({values});
+            }}
             
             >
             <div className='wrapp-radio-group'>
@@ -70,8 +73,25 @@ function FormAsesorias () {
             </Form.Item>
             </div>
             
-
+            <div>
+            <p className='text-head-group-radio'>Subida de archivos</p>
+            <p className='info-text'>Sube los siguientes archivos para tu asesoría.</p>
+            <p className='info-text'>Por favor, asegúrate de que los archivos sean actuales (que tengan menos de 7 días) para brindarte la mejor asesoría posible.</p>
+            
+            <Form.Item>
+            <div className='wrapp-upload-content'>
             <UploadFile />
+            <UploadFile />
+            <UploadFile />
+            <UploadFile />
+            </div>
+            </Form.Item>
+
+            
+            
+            </div>
+            
+            
 
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
                 <Button type="primary" htmlType="submit">

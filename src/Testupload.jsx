@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
-import './UploadFile.css';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -21,7 +20,7 @@ const beforeUpload = (file) => {
 };
 
 
-const UploadFile = () => {
+const Testupload = () => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("");
@@ -89,13 +88,20 @@ const UploadFile = () => {
     
     
 }
-
+  
+  
+  
+  
+  
+  
+  
+  
+  
   const uploadButton = (
     <button
       style={{
         border: 0,
         background: 'none',
-        height: '135px',
       }}
       type="button"
     >
@@ -105,17 +111,13 @@ const UploadFile = () => {
           marginTop: 8,
         }}
       >
-       <p >Choose file or drop here</p> 
-
+        Upload
       </div>
     </button>
   );
   return (
-    <div className='card-upload'>
-        <div className='wrapp-component-upload'>
-        <p>Fotografía intraoral</p>
-        <p>Fotografía intraoral</p>
-        <Upload.Dragger
+    <>
+      <Upload
         name="avatar"
         listType="picture-card"
         className="avatar-uploader"
@@ -130,22 +132,15 @@ const UploadFile = () => {
             alt="avatar"
             style={{
               width: '100%',
-              height: '136px',
-              objectFit: 'cover',
             }}
           />
         ) : (
           uploadButton
         )}
-      </Upload.Dragger>
-
-        </div>
-        
-    
+      </Upload>
      
-      <div>Hola</div>
-    </div>
+    </>
   );
 };
 
-export { UploadFile };
+export { Testupload };
