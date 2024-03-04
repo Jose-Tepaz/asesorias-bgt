@@ -1,19 +1,50 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import './FormAsesorias.css'
 import { Radio, Form, Button, Input } from 'antd';
 import { UploadFile } from './UploadFile';
 import { Testupload } from './Testupload';
 import {useState} from 'react';
 
+
+const seEncuentra = [
+    {
+      label: 'En boca',
+      value: 'en-boca',
+    },
+    {
+      label: 'No está en boca',
+      value: 'no-esta-en-boca',
+    },
+  ];
+
+
 function FormAsesorias () {
     const [value, setValue] = useState(1);
     const [values, setValues] = useState(1);
+    //cambia es estado del campo requerido
+    const [componentNoRequerid, setComponentNoRequerid] = useState(false);
+    //muestra el grupo de opciones
+    const [componentDisabled1, setComponentDisabled1] = useState(null);
+    
+    useEffect (() => {
+        if (window.location.search === "?treatment_id?admin_id?tax_data_id?first_call") {
+            //console.log(window.location.search);
+            console.log("Si se logro");
+           //const activeModuleForm = setComponentDisabled(true);
+            //setActive1();
+            setComponentNoRequerid(true);
+            setComponentDisabled1("none-div");
+        };
+    });
+
+    
+    let changeclass = componentDisabled1 != null ? ' none-div' : '';
 
     const onChange = (e) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
-  };
+    };
 
   const onChanges = (e) => {
     console.log('radio checked', e.target.value);
@@ -34,18 +65,15 @@ function FormAsesorias () {
             }}
             
             >
-            <div className='wrapp-radio-group'>
+            <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>El caso se encuentra</p>
                 <Form.Item
                 name="Radio"
-                rules={[{ required: true, message: 'Elije una opcion' }]}
+                rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
-                    <Radio.Group onChange={onChange} value={value} >
-                        <Radio className='text-radio' value={"enboca"}>En boca</Radio>
-                        <Radio className='text-radio' value={"noenboca"}>No está en boca</Radio>      
-                    </Radio.Group>
-                </Form.Item>
-                
+                <Radio.Group onChange={onChange} value={value} options={seEncuentra} className='text-radio'>        
+                </Radio.Group>
+                </Form.Item>   
             </div>
             <div className='wrapp-radio-group'>
                 <p className='text-head-group-radio'>Tipo de asesoría</p>
@@ -54,7 +82,7 @@ function FormAsesorias () {
                 name="Radios"
                 rules={[{ required: true, message: 'Elije una opcion' }]}
                 >
-                    <Radio.Group onChange={onChanges} value={values}>
+                    <Radio.Group onChange={onChanges} value={values} >
                         <Radio className='text-radio' value={"enbocas"}>Asesoría clínica</Radio>
                         <Radio className='text-radio' value={"noenbocas"}>Asesoría de planificación</Radio>      
                     </Radio.Group>

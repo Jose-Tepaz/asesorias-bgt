@@ -123,21 +123,21 @@ const UploadFile = () => {
         //action="http://localhost:3000/"
         beforeUpload={beforeUpload}
         onChange={handleChange}
-      >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt="avatar"
-            style={{
-              width: '100%',
-              height: '136px',
-              objectFit: 'cover',
-            }}
-          />
-        ) : (
-          uploadButton
-        )}
-      </Upload.Dragger>
+        >
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="avatar"
+              style={{
+                width: '100%',
+                height: '136px',
+                objectFit: 'cover',
+              }}
+            />
+          ) : (
+            uploadButton
+          )}
+        </Upload.Dragger>
 
         </div>
         
