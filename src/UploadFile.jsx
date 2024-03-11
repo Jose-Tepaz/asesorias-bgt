@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload } from 'antd';
 import './UploadFile.css';
+//assets
+import add1 from './assets/add.png';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -26,19 +28,6 @@ const UploadFile = () => {
   const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("");
 
-  //const handleChange = (info) => {
-  //  if (info.file.status === 'uploading') {
-  //    setLoading(true);
-  //    return;
-  //  }
-  //  if (info.file.status === 'done') {
-  //    // Get this url from response in real world.
-  //    getBase64(info.file.originFileObj, (url) => {
-  //      setLoading(false);
-  //      setImageUrl(url);
-  //    });
-  //  }
-  //};
   
   const handleChange = async (e) => {
 
@@ -105,7 +94,7 @@ const UploadFile = () => {
           marginTop: 8,
         }}
       >
-       <p >Choose file or drop here</p> 
+       <p className='text-in-btn-upload'> <span>Choose file</span> or drop here</p> 
 
       </div>
     </button>
@@ -113,8 +102,11 @@ const UploadFile = () => {
   return (
     <div className='card-upload'>
         <div className='wrapp-component-upload'>
-        <p>Fotografía intraoral</p>
-        <p>Fotografía intraoral</p>
+          <div className='wrapp-head-text-component-uploiad'>
+            <p className='info-text'>Fotografía intraoral</p>
+            <p className='info-text-strong'>Oclusal superior</p>
+          </div>
+        
         <Upload.Dragger
         name="avatar"
         listType="picture-card"
@@ -138,12 +130,10 @@ const UploadFile = () => {
             uploadButton
           )}
         </Upload.Dragger>
-
         </div>
-        
-    
-     
-      <div>Hola</div>
+      <div className='wrapp-img-example-car-upload'>
+        <img src={add1} alt="" />
+      </div>
     </div>
   );
 };

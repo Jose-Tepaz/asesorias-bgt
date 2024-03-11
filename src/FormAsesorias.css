@@ -4,6 +4,7 @@
     display: flex;
     flex-direction: column;
     gap: 42px;
+    width: 100%;
 }
 
 .form-asesorias {
@@ -11,6 +12,7 @@
     display: flex;
     flex-direction: column;
     gap: 42px;
+    max-width: 950px;
 }
 
 .text-head-group-radio {
@@ -20,6 +22,28 @@
     line-height: 21.6px;
     color: #3C4549;
     letter-spacing: 2%;
+}
+
+.info-text {
+    font-family: 'Neue montreal';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    color: #757575;
+}
+
+.info-text-strong {
+    font-family: 'Neue montreal';
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 19.2px;
+    color: #3C4549;
+}
+
+.wrapp-text-alert-img-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
 }
 
 .text-radio label {
@@ -63,6 +87,20 @@
 .wrapp-upload-content {
     margin-top: 18px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 24px;
+    width: auto;
+}
+
+.alert-upload-img {
+    padding: 9px 16px;
+    background: #EEEEF2;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #9E9E9E;
+    border-radius: 8px;
+    display: flex;
+    gap: 4.5px;
+    width: 440px;
+    margin-top: 8px;
 }
