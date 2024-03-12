@@ -6,6 +6,7 @@ import { UploadFile } from './UploadFile';
 import { Testupload } from './Testupload';
 import {useState} from 'react';
 import alerticon from './alert-icon.svg';
+import Swal from 'sweetalert2';
 
 const { TextArea } = Input;
 
@@ -121,16 +122,95 @@ console.log(datosForm);
     };
     let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
 
+  
+ 
 
-    const registrandoAsesoria = (e) => {
+    //Load BTN
+   const [loadings, setLoadings] = useState([]);
+   const enterLoading = (index) => {
+     setLoadings((prevLoadings) => {
+       const newLoadings = [...prevLoadings];
+       
+       newLoadings[index] = true;
+       return newLoadings;
+     });
+
+     setTimeout(() => {
+       setLoadings((prevLoadings) => {
+         const newLoadings = [...prevLoadings];
+         newLoadings[index] = false;
+         
+         
+         console.log("ya se envio");
+         alertaSucces();
+         return newLoadings;         
+       });
+     }, 2000);
+   };
+
+
+ //Alertas
+//modal de confirmación
+const alertaSucces=()=>{
+  Swal.fire({
+  title: "Solicitaste tu cotización",
+  html: "Te enviaremos una copia de tu cotización a tu correo electrónico y nos comunicaremos contigo en un plazo de 3 días hábiles para confirmar todos los detalles.",
+  imageUrl: "https://cdn.shopify.com/s/files/1/0633/1459/1884/files/icon-done.svg?v=1706909092",
+imageWidth: 60,
+imageHeight: 60,
+showCloseButton: true,
+confirmButtonText: `Volver al inicio`,
+  customClass: {
+      popup: 'popAlert',
+      title: 'titlePopup',
+      htmlContainer: 'textpopup',
+      confirmButton: 'clear-cart',
+      closeButton: 'clodeBtnBtn'
+
+  }
+}).then((result) => {
+  
+  
+});
+}
+
+//modal de error
+const alertaError=()=>{
+  Swal.fire({
+  title: "No pudimos solicitar tu cotización",
+  html: "Lo sentimos, pero algo ha salido mal al procesar tu solicitud. Por favor, verifica tu conexión a internet e inténtalo de nuevo.",
+  imageUrl: "https://cdn.shopify.com/s/files/1/0633/1459/1884/files/icon-error.svg?v=1706911874",
+imageWidth: 60,
+imageHeight: 60,
+showCloseButton: true,
+confirmButtonText: `Volver a intentarlo`,
+  customClass: {
+      popup: 'popAlert',
+      confirmButton: 'btn-siguiente',
+      title: 'titlePopup',
+      htmlContainer: 'textpopup',
+      closeButton: 'clodeBtnBtn'
+
+  }
+}).then((result) => {
+  
+});
+}
+
+
+
+
+//funcion que general el registro en airtable
+const registrandoAsesoria = (e) => {
       //const convert = JSON.stringify(e)
 //console.log(convert);
-
 console.log(e.TextArea);
 console.log(datosForm.uno)
-
 console.log("ya estamos aca");
-    }
+
+}
+
+
 
     return (
         <div className='wrapp-form-asesorias'>
@@ -238,7 +318,12 @@ console.log("ya estamos aca");
             </div>
             
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-                <Button type="primary" htmlType="submit" >
+                <Button 
+                type="primary" 
+                htmlType="submit" 
+                loading={loadings[0]} 
+                onClick={() => enterLoading(0)}
+                >
                     Siguiente
                 </Button>
             </Form.Item>
