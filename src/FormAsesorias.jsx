@@ -1,11 +1,13 @@
 
 import React, { useEffect } from 'react';
 import './FormAsesorias.css'
-import { Radio, Form, Button, Input } from 'antd';
+import { Radio, Form, Button, Input, } from 'antd';
 import { UploadFile } from './UploadFile';
 import { Testupload } from './Testupload';
 import {useState} from 'react';
 import alerticon from './alert-icon.svg';
+
+const { TextArea } = Input;
 
 
 
@@ -41,6 +43,19 @@ function FormAsesorias () {
     
     //array para setear tipoAsesoria
     const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
+
+    //Recibe los valores del formulario
+    const [datosForm, setDatosForm] = useState([{uno:"uno", dos:"dos"}]);
+
+console.log(datosForm);
+
+    //REcibiendo URL de imagenes de los componentes hijos
+    const URLimage = (imagenURL) => {
+      console.log(imagenURL);
+      console.log("aqui esta");
+      setDatosForm({uno:imagenURL})
+
+    }
 
 
     //setea valores en radio buttons
@@ -106,20 +121,27 @@ function FormAsesorias () {
     };
     let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
 
+
+    const registrandoAsesoria = (e) => {
+      //const convert = JSON.stringify(e)
+//console.log(convert);
+
+console.log(e.TextArea);
+console.log(datosForm.uno)
+
+console.log("ya estamos aca");
+    }
+
     return (
         <div className='wrapp-form-asesorias'>
-            
-           
-                <div>
-            <h2 className='head-master-form'>Agenda tu asesoría</h2>
-            <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
-
+            <div>
+               <h2 className='head-master-form'>Agenda tu asesoría</h2>
+               <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
             </div>
             <Form 
             className='form-asesorias'
-            onFinish={(values) => {
-                console.log({values});
-            }}
+            
+            onFinish={registrandoAsesoria}
             >
             {/* Wrapp form part checkbox and inputs */}
             <div 
@@ -131,7 +153,7 @@ function FormAsesorias () {
             <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>El caso se encuentra</p>
                 <Form.Item
-                name="Radio"
+                name="El caso se encuentra"
                 rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
                 <Radio.Group onChange={onChange}  value={value} options={seEncuentra} className='text-radio'>        
@@ -141,7 +163,9 @@ function FormAsesorias () {
             {/* En bocan */}
             <div className={`wrapp-radio-group${changeclassEnboca}`}>
                 <p className='text-head-group-radio'>El caso se encuentra en el alineador </p>
-                <Form.Item>
+                <Form.Item
+                name="Indica alineador"
+                >
                 <Input placeholder="Indica el alineador" />
                 </Form.Item>  
             </div>
@@ -151,7 +175,7 @@ function FormAsesorias () {
                 <p className='text-head-group-radio'>Tipo de asesoría</p>
                 <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
                 <Form.Item
-                name="Radios"
+                name="Tipo de asesoría"
                 rules={[{ required: true, message: 'Elije una opcion' }]}
                 >
                     
@@ -168,9 +192,11 @@ function FormAsesorias () {
             <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
             <Form.Item
             name="TextArea"
+            
             rules={[{ required: true, message: 'Campo obligatorio' }]}
             >      
-            <Input.TextArea placeholder="Indica el motivo de consulta" />
+            <Input.TextArea  rows={5} placeholder="Indica el motivo de consulta" />
+           
             </Form.Item>
             </div>
             </div>
@@ -196,9 +222,11 @@ function FormAsesorias () {
             
             </div>
             
-            <Form.Item>
+            <Form.Item
+            
+            >
             <div className='wrapp-upload-content'>
-            <UploadFile />
+            <UploadFile URLimage={URLimage} />
             <UploadFile />
             <UploadFile />
             <UploadFile />
@@ -210,7 +238,7 @@ function FormAsesorias () {
             </div>
             
             <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" >
                     Siguiente
                 </Button>
             </Form.Item>

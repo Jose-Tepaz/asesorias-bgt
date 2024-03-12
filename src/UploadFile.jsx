@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { message, Upload } from 'antd';
+import { message, Upload, Form } from 'antd';
 import './UploadFile.css';
 //assets
 import add1 from './assets/add.png';
@@ -10,6 +10,7 @@ const getBase64 = (img, callback) => {
   reader.addEventListener('load', () => callback(reader.result));
   reader.readAsDataURL(img);
 };
+
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
@@ -23,10 +24,11 @@ const beforeUpload = (file) => {
 };
 
 
-const UploadFile = () => {
+const UploadFile = ({URLimage}) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("");
+ 
 
   
   const handleChange = async (e) => {
@@ -34,8 +36,7 @@ const UploadFile = () => {
     if (e.file.status === 'uploading') {
         setLoading(true);
         
-        return;
-  
+    return;
       }
       console.log(e)
         
@@ -57,21 +58,16 @@ const UploadFile = () => {
         console.log(res.status);
         console.log(res.url);
         setImage(file.secure_url)
-        setLoading(false);
-    
-
+        setLoading(false);  
         if (res.status === 200) {
             setLoading(false);
-            setImageUrl(file.secure_url);
-            
-            //  setImageUrl(url);
-            // Get this url from response in real world.
-            //getBase64(res, (url) => {
-            //  setLoading(false);
-            //  setImageUrl(url);
-            //});
-            console.log("si se subio")
+            setImageUrl(file.secure_url); 
+            console.log(file.secure_url)
+            //enviamos datos al componente padre
+            URLimage(file.secure_url);
         };
+
+       
     
         // Get this url from response in real world.
     
@@ -99,6 +95,7 @@ const UploadFile = () => {
       </div>
     </button>
   );
+
   return (
     <div className='card-upload'>
         <div className='wrapp-component-upload'>
@@ -107,14 +104,19 @@ const UploadFile = () => {
             <p className='info-text-strong'>Oclusal superior</p>
           </div>
         
+      <Form.Item
+      >
+               
         <Upload.Dragger
-        name="avatar"
+       
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
         //action="http://localhost:3000/"
         beforeUpload={beforeUpload}
         onChange={handleChange}
+        
+        getValueFromEvent={imageUrl}
         >
           {imageUrl ? (
             <img
@@ -130,10 +132,12 @@ const UploadFile = () => {
             uploadButton
           )}
         </Upload.Dragger>
+        </Form.Item> 
         </div>
       <div className='wrapp-img-example-car-upload'>
         <img src={add1} alt="" />
       </div>
+      
     </div>
   );
 };
