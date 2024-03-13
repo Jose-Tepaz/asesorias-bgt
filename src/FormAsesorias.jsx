@@ -72,10 +72,24 @@ console.log(datosForm);
       ];
     
     //Condicion segun datos de URL
+    //?treatment_id?admin_id?treatment_status?first_call
+    //?463?46?0?1
+    //0: ""
+    //1: "treatment_id"
+    //2: "admin_id"
+    //3: "treatment_status"
+    //4: "first_call"
     useEffect (() => {
-        if (window.location.search === "?treatment_id?admin_id?tax_data_id?first_call") {
+
+        const getUrl= window.location.search;
+        const separateUrl = getUrl.split("?");
+        console.log(separateUrl[3])
+
+        //si ya existe una planificación
+        if (separateUrl[3] == 0 ) {
             //console.log(window.location.search);
-            console.log("Si se logro");
+            console.log("Si funciona la URL");
+            console.log(window.location);
            //const activeModuleForm = setComponentDisabled(true);
             //setActive1();
             setComponentNoRequerid(true);
@@ -251,7 +265,7 @@ console.log("ya estamos aca");
             </div>
 
             {/* Tipo de asesoria */}
-            <div className='wrapp-radio-group'>
+            <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>Tipo de asesoría</p>
                 <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
                 <Form.Item
