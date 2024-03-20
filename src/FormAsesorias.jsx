@@ -19,11 +19,13 @@ function FormAsesorias () {
     const seEncuentra = [
         {
           label: 'En boca',
-          value: 'en-boca',
+          value: 'En boca',
+         
         },
         {
           label: 'No está en boca',
-          value: 'no-esta-en-boca',
+          value: 'No está en boca',
+          
         },
       ];
 
@@ -46,7 +48,7 @@ function FormAsesorias () {
     const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
 
     //Recibe los valores del formulario
-    const [datosForm, setDatosForm] = useState([{uno:"uno", dos:"dos"}]);
+    const [datosForm, setDatosForm] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
 
 console.log(datosForm);
 
@@ -63,30 +65,30 @@ console.log(datosForm);
     const tipoAsesoria = [
         {
           label: 'Asesoría clínica',
-          value: tipoAsesoriaArr + "-" + "asesoria-clinica",
+          value: "Asesoría clinica",
         },
         {
           label: 'Asesoría de planificación',
-          value: tipoAsesoriaArr + "-" + "planificacion",
+          value: "Asesoría de planificación",
         },
       ];
     
     //Condicion segun datos de URL
-    //?treatment_id?admin_id?treatment_status?first_call
+    //?treatment_id=1&treatment_status=true&admin_id=1&first_call=true
     //?463?46?0?1
-    //0: ""
-    //1: "treatment_id"
-    //2: "admin_id"
-    //3: "treatment_status"
-    //4: "first_call"
+    //0: "?treatment_id=1"
+    //1: "treatment_status_id=3"
+    //2: "admin_id=1"
+    //3: "first_call=true"
+    
     useEffect (() => {
 
         const getUrl= window.location.search;
-        const separateUrl = getUrl.split("?");
-        console.log(separateUrl[3])
+        const separateUrl = getUrl.split("&");
+        console.log(separateUrl)
 
         //si ya existe una planificación
-        if (separateUrl[3] == 0 ) {
+        if (separateUrl[1] == "treatment_status=false" ) {
             //console.log(window.location.search);
             console.log("Si funciona la URL");
             console.log(window.location);
@@ -94,6 +96,7 @@ console.log(datosForm);
             //setActive1();
             setComponentNoRequerid(true);
             setComponentDisabled1("none-div");
+            setActiveUploadImg("activemos")
         };
     });
 
@@ -106,61 +109,72 @@ console.log(datosForm);
     const onChange = (e) => {
     console.log('radio checked', e.target.value);
     setValue(e.target.value);
-    if (e.target.value == "en-boca"){
-        setCasoEnBoca(e.target.value);
+    if (e.target.value === "En boca"){
+      setCasoEnBoca(e.target.value);
+
+      setActiveUploadImg("activemos");
+
+           
     } else {
         setCasoEnBoca(null);
+        setActiveUploadImg(null);
+        
+        
     }
     serTipoAsesoriaArr(e.target.value);
-    setActiveUploadImg(null)
+   
     };
 
 //On change TIpo de asesoria
     const onChanges = (e) => {
       console.log('radio checked', e.target.value);
       setValues(e.target.value);
-      
-      if (e.target.value === "en-boca-asesoria-clinica") {
+      if (e.target.value === "En boca Asesoría clinica") {
         
         setActiveUploadImg("activemos")
-      } else if (e.target.value === "en-boca-planificacion") {
+      } else if (e.target.value === "En boca Planificación") {
         setActiveUploadImg("activemos")
         
-      }else if (e.target.value === "no-esta-en-boca-asesoria-clinica") {
+      }else if (e.target.value === "No esta en boca Asesoriía clinica") {
         setActiveUploadImg(null)
         
-      }else if (e.target.value === "no-esta-en-boca-planificacion") {
+      }else if (e.target.value === "No esta en boca Planificacion") {
         
         setActiveUploadImg(null)
       }
+      
     };
+
     let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
+
+   
+
+    console.log(activeUploadImg);
+    console.log("aqui el datooooooooooooo");
 
   
  
 
     //Load BTN
-   const [loadings, setLoadings] = useState([]);
-   const enterLoading = (index) => {
-     setLoadings((prevLoadings) => {
-       const newLoadings = [...prevLoadings];
-       
-       newLoadings[index] = true;
-       return newLoadings;
-     });
-
-     setTimeout(() => {
-       setLoadings((prevLoadings) => {
-         const newLoadings = [...prevLoadings];
-         newLoadings[index] = false;
-         
-         
-         console.log("ya se envio");
-         alertaSucces();
-         return newLoadings;         
-       });
-     }, 2000);
-   };
+    const [loadings, setLoadings] = useState([]);
+    const enterLoading = (index) => {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        
+        newLoadings[index] = true;
+        return newLoadings;
+      });
+ 
+      setTimeout(() => {
+        setLoadings((prevLoadings) => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[index] = false;
+          console.log("ya se envio");
+          alertaSucces();
+          return newLoadings;         
+        });
+      }, 2000);
+    };
 
 
  //Alertas
@@ -184,7 +198,8 @@ confirmButtonText: `Volver al inicio`,
   }
 }).then((result) => {
   
-  
+  window.location.reload();
+
 });
 }
 
@@ -215,14 +230,55 @@ confirmButtonText: `Volver a intentarlo`,
 
 
 //funcion que general el registro en airtable
-const registrandoAsesoria = (e) => {
-      //const convert = JSON.stringify(e)
-//console.log(convert);
-console.log(e.TextArea);
-console.log(datosForm.uno)
-console.log("ya estamos aca");
+//const registrandoAsesoria = (e) => {
+//      //const convert = JSON.stringify(e)
+////console.log(convert);
+//console.log(e.TextArea);
+//console.log(datosForm.uno)
+//console.log("ya estamos aca");
+//
+//}
 
+async function registrandoAsesoria(e) {
+  console.log(e.TipoDeAsesoria.label);
+  try {
+      const response = await fetch('https://api.airtable.com/v0/appHsHG762lLNWvtr/tblJAIDAKMMtwGX39', {
+      method: 'POST',
+      headers: {
+          "Accept": "application/json",
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer patIWUuGVMhjM6ChE.41b3f1abc3795a2e56b25b0f07e78eba8eb745cd988484f3ce07e525a143da49',
+      },
+      body: JSON.stringify({
+          "records": [{
+              "fields": {
+                  "fld47enEc8mERiaGA": "`${idDataApi}`", //Id liente
+                  "fldFwereJT6gt200o": "`${adressSelect}`", //Id Admin
+                  "fldftOSA2WktZLZly": "`${mesajeValue}`", //Tiene planificación
+                  "fldSnX8x69DN6Fiur": e.ElcasoSeEncuentra, //El caso se ecnuentra
+                  "fldsCZjm564gdNVgi": e.IndicaAlineador, //Alineador
+                  "fldojtzk8egAZSRSR": e.TipoDeAsesoria, //Tipo de asesoría
+                  "fldLHNajCHT0TiTEG": e.TextArea, //Mensaje
+                  "fldvqEwaivJsemQI2": datosForm.uno, //Ocular superurir
+              }
+          }],
+          "typecast": true
+      })
+  });
+
+  console.log(response);
+  
+  if (response.status === 200) {
+    enterLoading(0);  
+  } else {
+      alertaError(); 
+  }
+      
+  } catch (error) {
+      console.log(error)      
+  }  
 }
+
 
 
 
@@ -236,6 +292,7 @@ console.log("ya estamos aca");
             className='form-asesorias'
             
             onFinish={registrandoAsesoria}
+            
             >
             {/* Wrapp form part checkbox and inputs */}
             <div 
@@ -247,10 +304,10 @@ console.log("ya estamos aca");
             <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>El caso se encuentra</p>
                 <Form.Item
-                name="El caso se encuentra"
+                name="ElcasoSeEncuentra"
                 rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
-                <Radio.Group onChange={onChange}  value={value} options={seEncuentra} className='text-radio'>        
+                <Radio.Group onChange={onChange}  value={value} options={seEncuentra}  className='text-radio'>        
                 </Radio.Group>
                 </Form.Item>   
             </div>
@@ -258,7 +315,7 @@ console.log("ya estamos aca");
             <div className={`wrapp-radio-group${changeclassEnboca}`}>
                 <p className='text-head-group-radio'>El caso se encuentra en el alineador </p>
                 <Form.Item
-                name="Indica alineador"
+                name="IndicaAlineador"
                 >
                 <Input placeholder="Indica el alineador" />
                 </Form.Item>  
@@ -269,7 +326,7 @@ console.log("ya estamos aca");
                 <p className='text-head-group-radio'>Tipo de asesoría</p>
                 <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
                 <Form.Item
-                name="Tipo de asesoría"
+                name="TipoDeAsesoria"
                 rules={[{ required: true, message: 'Elije una opcion' }]}
                 >
                     
@@ -336,7 +393,7 @@ console.log("ya estamos aca");
                 type="primary" 
                 htmlType="submit" 
                 loading={loadings[0]} 
-                onClick={() => enterLoading(0)}
+                
                 >
                     Siguiente
                 </Button>
