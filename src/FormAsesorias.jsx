@@ -15,34 +15,51 @@ const { TextArea } = Input;
 
 
 function FormAsesorias () {
-    //setea valores en radio buttons
-    const seEncuentra = [
-        {
-          label: 'En boca',
-          value: 'En boca',
-         
-        },
-        {
-          label: 'No está en boca',
-          value: 'No está en boca',
-          
-        },
-      ];
+   
 
     const [value, setValue] = useState(1);
     const [values, setValues] = useState(1);
-    //cambia es estado del campo requerido
-    const [componentNoRequerid, setComponentNoRequerid] = useState(false);
+
+    //cambia el estado del campo requerido EL CASO SE ECNUENTRA
+    const [componentNoRequerid, setComponentNoRequerid] = useState(true);
+
+    //cambia el estado del campo requerido EL CASO EN ALINEADOR
+    const [inputAlineador, setInputAlineador] = useState(true);
+
+     //cambia el estado del campo requerido TIPO DE ASESORÍA
+     const [inputTasesoria, setInputTasesoria] = useState(true);
+
+      //cambia el estado del campo requerido NECESITA FACTURA
+      const [inputNecesitaFactura, setInputNecesitaFactura] = useState(true);
+
     //muestra el grupo de opciones
     const [componentDisabled1, setComponentDisabled1] = useState(null);
+
     //Si el caso se encuentra en boca
     const [casoEnBoca, setCasoEnBoca] = useState(null);
+
     //Asesoria clinica
     const [asesoriaClinica, setAsesoriaClinica] = useState(null);
+
     //Asesoria Planificacion
     const [asesoriaPlanificacion, setAsesoriaPlanificacion] = useState(null);
+
     //Para activar upload img
     const [activeUploadImg, setActiveUploadImg] = useState(null);
+
+    //Estado que muestra u oculta el area  de factura
+    const [facturaIs, setFacturaIs] = useState(null);
+
+     //Estado que envia el dato a Airtable si necesita o no factura
+     const [facturaNeed, setFacturaNeed] = useState(false);
+
+    //Ya romo su primera acesoría 
+    const [firstCallStatus, setFirstCallStatus] = useState(null);
+
+    // Ya tiene una planificación
+    const [tratmentStatus, setTratmentStatus] = useState(null);
+
+
     
     //array para setear tipoAsesoria
     const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
@@ -60,6 +77,19 @@ console.log(datosForm);
 
     }
 
+     //setea valores en radio buttons
+    const seEncuentra = [
+      {
+        label: 'En boca',
+        value: 'En boca',
+       
+      },
+      {
+        label: 'No está en boca',
+        value: 'No está en boca',
+        
+      },
+    ];
 
     //setea valores en radio buttons
     const tipoAsesoria = [
@@ -72,6 +102,18 @@ console.log(datosForm);
           value: "Asesoría de planificación",
         },
       ];
+
+      //Necesita factura?
+    const factura = [
+      {
+        label: 'Solicitar factura',
+        value: "true",
+      },
+      {
+        label: 'No necesito factura',
+        value: "false",
+      },
+    ];
     
     //Condicion segun datos de URL
     //?treatment_id=1&treatment_status=true&admin_id=1&first_call=true
@@ -94,15 +136,38 @@ console.log(datosForm);
             console.log(window.location);
            //const activeModuleForm = setComponentDisabled(true);
             //setActive1();
-            setComponentNoRequerid(true);
+            //defini si los campos serás requeridos
+            setComponentNoRequerid(false)
+            setInputAlineador(false);
+            setInputTasesoria(false);
             setComponentDisabled1("none-div");
-            setActiveUploadImg("activemos")
-        };
+            setActiveUploadImg("activemos");
+            setFacturaIs("non-div");
+
+            setTratmentStatus(false)
+
+        } else if (separateUrl[3] == "first_call=true" ){
+          
+          setInputNecesitaFactura(true);
+          setFirstCallStatus(true)
+
+        }else {
+          setFacturaIs("mostrar");
+          setComponentNoRequerid(true);
+          setInputTasesoria(true);
+          setInputNecesitaFactura(false);
+
+          setTratmentStatus(true)
+          setFirstCallStatus(false)
+        
+    }
+        
     });
 
     //Oculta o muestra el area del form
     let changeclass = componentDisabled1 != null ? ' none-div' : '';
     let changeclassEnboca = casoEnBoca == null ? ' none-div' : '';
+    let hideShowFactura = facturaIs != null ? ' none-div' : '';
     
 
   //On change group el caso se encuentra
@@ -113,9 +178,12 @@ console.log(datosForm);
       setCasoEnBoca(e.target.value);
 
       setActiveUploadImg("activemos");
+      setInputAlineador(true);
+      
 
            
     } else {
+      setInputAlineador(false);
         setCasoEnBoca(null);
         setActiveUploadImg(null);
         
@@ -145,15 +213,24 @@ console.log(datosForm);
       
     };
 
-    let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
+    //On Factura
+    const onFactura = (e) => {
+      console.log('radio checked', e.target.value);
 
-   
+      if (e.target.value === "true") {
+        
+        setFacturaNeed(true);
+      } else {
+        
+        setFacturaNeed(false);
+      }
+      
+    };
+
+    let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
 
     console.log(activeUploadImg);
     console.log("aqui el datooooooooooooo");
-
-  
- 
 
     //Load BTN
     const [loadings, setLoadings] = useState([]);
@@ -226,9 +303,6 @@ confirmButtonText: `Volver a intentarlo`,
 });
 }
 
-
-
-
 //funcion que general el registro en airtable
 //const registrandoAsesoria = (e) => {
 //      //const convert = JSON.stringify(e)
@@ -240,7 +314,7 @@ confirmButtonText: `Volver a intentarlo`,
 //}
 
 async function registrandoAsesoria(e) {
-  console.log(e.TipoDeAsesoria.label);
+  
   try {
       const response = await fetch('https://api.airtable.com/v0/appHsHG762lLNWvtr/tblJAIDAKMMtwGX39', {
       method: 'POST',
@@ -260,6 +334,9 @@ async function registrandoAsesoria(e) {
                   "fldojtzk8egAZSRSR": e.TipoDeAsesoria, //Tipo de asesoría
                   "fldLHNajCHT0TiTEG": e.TextArea, //Mensaje
                   "fldvqEwaivJsemQI2": datosForm.uno, //Ocular superurir
+                  "fldyc9cZ56SFyhx9F": firstCallStatus, //Tomo asesoría gratutita?
+                  "fldLX3ThXbADUNWVK": facturaNeed, //Necesita factura
+                  
               }
           }],
           "typecast": true
@@ -279,10 +356,7 @@ async function registrandoAsesoria(e) {
   }  
 }
 
-
-
-
-    return (
+return (
         <div className='wrapp-form-asesorias'>
             <div>
                <h2 className='head-master-form'>Agenda tu asesoría</h2>
@@ -316,6 +390,8 @@ async function registrandoAsesoria(e) {
                 <p className='text-head-group-radio'>El caso se encuentra en el alineador </p>
                 <Form.Item
                 name="IndicaAlineador"
+                
+                rules={[{ required: inputAlineador, message: 'Ingrese el alineador' }]}
                 >
                 <Input placeholder="Indica el alineador" />
                 </Form.Item>  
@@ -327,7 +403,7 @@ async function registrandoAsesoria(e) {
                 <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
                 <Form.Item
                 name="TipoDeAsesoria"
-                rules={[{ required: true, message: 'Elije una opcion' }]}
+                rules={[{ required: inputTasesoria, message: 'Elije una opcion' }]}
                 >
                     
                     <Radio.Group onChange={onChanges} value={values} options={tipoAsesoria} className='text-radio'>
@@ -350,14 +426,26 @@ async function registrandoAsesoria(e) {
            
             </Form.Item>
             </div>
+            {/* Necesita factura? */}
+            <div className={`wrapp-radio-group${hideShowFactura}`}>
+                <p className='text-head-group-radio'>¿Necesita facturar tu asesoría?</p>
+                <Form.Item
+                name="NecesitaFactura"
+                rules={[{ required: inputNecesitaFactura, message: 'Elije una opcion' }]}
+                >  
+                    <Radio.Group onChange={onFactura} value={values} options={factura} className='text-radio'>
+                            
+                    </Radio.Group>
+                </Form.Item>
+                
             </div>
+            </div>
+
+            
 
             {/* Wrapp form part upload */}
             <div 
             style={{
-               
-                
-
             }}>
             {/* Subida de archivos */}
             <div className={`${activeUploadImgstart}`}>
@@ -399,8 +487,7 @@ async function registrandoAsesoria(e) {
                 </Button>
             </Form.Item>
 
-            </Form>
-                      
+            </Form>                      
         </div>
     )
 }
