@@ -11,6 +11,7 @@ import { LateralizquierdaOclusion } from './UploadFiles/LateralizquierdaOclusion
 import { PanoramicaCraneo } from './UploadFiles/PanoramicaCraneo';
 import { LateralCraneo } from './UploadFiles/LateralCraneo';
 import { AreaMotivoConsulta } from './UploadFiles/AreaMotivoConsulta';
+import { CalendlyOneWrapp } from './CalendlyOneWrapp';
 
 import { Testupload } from './Testupload';
 import {useState} from 'react';
@@ -51,6 +52,12 @@ function FormAsesorias () {
 
     //Para activar upload img
     const [activeUploadImg, setActiveUploadImg] = useState(null);
+
+     //Activa / Oculta el formulario entero
+     const [activForm, setActivForm] = useState(null);
+
+    //Activa la seccion de calendly
+    const [activCalendly, setActivCalendly] = useState(null);
 
     //Estado que muestra u oculta el area  de factura
     const [facturaIs, setFacturaIs] = useState(null);
@@ -230,6 +237,7 @@ function FormAsesorias () {
 
           setTratmentStatus(true)
           setFirstCallStatus(false)
+          setActivForm("false");
         
     }
         
@@ -318,7 +326,7 @@ function FormAsesorias () {
           const newLoadings = [...prevLoadings];
           newLoadings[index] = false;
           console.log("ya se envio");
-          alertaSucces();
+          
           return newLoadings;         
         });
       }, 2000);
@@ -346,10 +354,15 @@ confirmButtonText: `Estoy de acuerdo`,
   }
 }).then((result) => {
   
-  window.location.reload();
-
+  //window.location.reload();
+  setActivForm("false");
+  setActivCalendly("true");
+  
 });
 }
+
+let muestraCalendly = activCalendly === null ? ' none-div' : '';
+let ocultaForm = activForm === "false" ? ' none-div' : '';
 
 //modal de error
 const alertaError=()=>{
@@ -385,7 +398,7 @@ confirmButtonText: `Volver a intentarlo`,
 //}
 
 async function registrandoAsesoria(e) {
-  
+  enterLoading(0);
   try {
       const response = await fetch('https://api.airtable.com/v0/appHsHG762lLNWvtr/tblJAIDAKMMtwGX39', {
       method: 'POST',
@@ -425,7 +438,7 @@ async function registrandoAsesoria(e) {
   console.log(response);
   
   if (response.status === 200) {
-    enterLoading(0);  
+    alertaSucces();
   } else {
       alertaError(); 
   }
@@ -437,16 +450,17 @@ async function registrandoAsesoria(e) {
 
 return (
         <div className='wrapp-form-asesorias'>
-            <div>
-               <h2 className='head-master-form'>Agenda tu asesoría</h2>
-               <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
-            </div>
+            
             <Form 
-            className='form-asesorias'
+            className={`form-asesorias${ocultaForm}`} 
             
             onFinish={registrandoAsesoria}
             
             >
+            <div className='head-form'>
+               <h2 className='head-master-form'>Agenda tu asesoría</h2>
+               <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
+            </div>
             {/* Wrapp form part checkbox and inputs */}
             <div 
             style={{
@@ -458,7 +472,7 @@ return (
             <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>El caso se encuentra</p>
                 <Form.Item
-                className='wrapp-each-item-form'
+                className={`wrapp-each-item-form ${ocultaForm}`} 
                 name="ElcasoSeEncuentra"
                 rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
@@ -568,15 +582,27 @@ return (
                 className='btn-siguiente'
                 type="primary" 
                 htmlType="submit" 
-                loading={loadings[0]} 
+                loading={loadings[0] } 
                 
                 >
                     Siguiente
                 </Button>
             </Form.Item>
 
-            </Form>                      
+            </Form>
+
+          
+            <div className={`${muestraCalendly}`}>
+            <CalendlyOneWrapp />
+            </div>
+          
+         
+
+
+            
         </div>
+
+        
     )
 }
 

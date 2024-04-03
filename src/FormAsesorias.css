@@ -7,6 +7,13 @@
     width: 100%;
 }
 
+.head-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
 .form-asesorias {
     text-align: left;
     display: flex;
@@ -150,8 +157,8 @@
     font-weight: 400!important;
 }
 
-.confirmBtn:focus {
-    outline: none!important;
+div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus {
+    box-shadow: none!important;
 }
 
 .btn-siguiente {
@@ -184,4 +191,12 @@ textarea {
 .input-text {
     height: 49px;
     width: 210px;
+}
+
+
+/*Calendly*/
+
+.calendly-inline-widget {
+    height: 700px!important;
+    width: 100%!important;
 }
