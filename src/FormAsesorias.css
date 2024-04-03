@@ -11,8 +11,13 @@
     text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 42px;
+    gap: 0px;
     max-width: 950px;
+}
+
+.wrapp-each-item-form {
+    margin-top: 14px;
+    margin-bottom: 40px;
 }
 
 .text-head-group-radio {
@@ -30,6 +35,15 @@
     font-weight: 400;
     line-height: 19.2px;
     color: #757575;
+}
+
+.info-text-red {
+    font-family: 'Neue montreal';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    color: #C60E02;
+    margin-top: -30px;
 }
 
 .info-text-strong {
@@ -71,7 +85,7 @@
 .wrapp-radio-group {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 4px;
 }
 
 .head-master-form {
@@ -103,4 +117,71 @@
     gap: 4.5px;
     width: 440px;
     margin-top: 8px;
+}
+
+.titlePopup {
+    font-family: 'Neue montreal';
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0px;
+    padding: 0px;
+}
+
+.textpopup {
+    font-family: 'Neue montreal';
+    font-size: 18px!important;
+    font-weight: 400!important;
+    margin: 0px;
+    padding: 0px;
+    text-align: justify!important;
+}
+
+.textpopup span {
+    font-weight: 500!important;
+}
+
+.confirmBtn {
+    border-radius: 30px!important;
+    padding: 12px 25px;
+    background: #EB9542!important;
+    color: #fff!important;
+    font-family: 'Neue montreal';
+    font-size: 18px!important;
+    font-weight: 400!important;
+}
+
+.confirmBtn:focus {
+    outline: none!important;
+}
+
+.btn-siguiente {
+    padding: 12px 25px;
+    background: #EB9542;
+    border-radius: 30px;
+    font-size: 18px;
+    height: auto;
+    line-height: 22px;
+}
+
+.btn-siguiente:hover {
+    background: #f19c4b!important;
+}
+
+input {
+    font-family: 'Neue montreal'!important;
+    font-size: 18px!important;
+    font-weight: 400!important;
+    color: #3C4549!important;
+}
+
+textarea {
+    font-family: 'Neue montreal'!important;
+    font-size: 18px!important;
+    font-weight: 400!important;
+    color: #3C4549!important;
+}
+
+.input-text {
+    height: 49px;
+    width: 210px;
 }

@@ -2,21 +2,26 @@
 import React, { useEffect } from 'react';
 import './FormAsesorias.css'
 import { Radio, Form, Button, Input, } from 'antd';
-import { UploadFile } from './UploadFile';
+import { UploadFile } from './UploadFiles/OclusalSuperior';
+import { Oclusalinferior } from './UploadFiles/Oclusalinferior';
+import { FrontalSinAlineador } from './UploadFiles/FrontalSinAlineador'; 
+import { FrontalConAlineador } from './UploadFiles/FrontalConAlineador';
+import { LateralDerechaOclusion } from './UploadFiles/LateralDerechaOclusion'; 
+import { LateralizquierdaOclusion } from './UploadFiles/LateralizquierdaOclusion';
+import { PanoramicaCraneo } from './UploadFiles/PanoramicaCraneo';
+import { LateralCraneo } from './UploadFiles/LateralCraneo';
+import { AreaMotivoConsulta } from './UploadFiles/AreaMotivoConsulta';
+
 import { Testupload } from './Testupload';
 import {useState} from 'react';
 import alerticon from './alert-icon.svg';
+import iconImportant from './assets/icon-alert-important.svg';
 import Swal from 'sweetalert2';
 
 const { TextArea } = Input;
 
-
-
-
-
 function FormAsesorias () {
    
-
     const [value, setValue] = useState(1);
     const [values, setValues] = useState(1);
 
@@ -50,32 +55,96 @@ function FormAsesorias () {
     //Estado que muestra u oculta el area  de factura
     const [facturaIs, setFacturaIs] = useState(null);
 
-     //Estado que envia el dato a Airtable si necesita o no factura
-     const [facturaNeed, setFacturaNeed] = useState(false);
+    //Estado que envia el dato a Airtable si necesita o no factura
+    const [facturaNeed, setFacturaNeed] = useState(false);
 
-    //Ya romo su primera acesoría 
+    //Ya tomo su primera acesoría 
     const [firstCallStatus, setFirstCallStatus] = useState(null);
 
     // Ya tiene una planificación
     const [tratmentStatus, setTratmentStatus] = useState(null);
 
-
-    
     //array para setear tipoAsesoria
     const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
 
-    //Recibe los valores del formulario
-    const [datosForm, setDatosForm] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    //Recibe URL imagen 1
+    const [oclusalSuperior, setOclusalSuperior] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
 
-console.log(datosForm);
+    //Recibe URL imagen Oclusal inferior
+    const [oclusalInferior, setOclusalInferior] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
 
-    //REcibiendo URL de imagenes de los componentes hijos
+    //Recibe URL imagen Frontal Sin Alineador
+    const [frontalSinAlineador, setFrontalSinAlineador] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+    //Recibe URL imagen Frontal Con alineador
+    const [frontalConAlineador, setFrontalConAlineador] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+    //Recibe URL imagen Lateral derecha
+    const [lateralDerecho, setLateralDerecho] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+    //Recibe URL imagen Lateral Izquierda
+    const [lateralIzquierdo, setLateralIzquierdo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+    //Panorámica de cráneo
+    const [panoramicaCraneo, setPanoramicaCraneo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+     
+    //Recibe imagen Lateral de cráneo
+    const [lateralCraneo, setLateralCraneo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+    //Recibe imagen Área de consulta
+    const [areaConsulta, setAreaConsulta] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+
+
+    //console.log(datosForm);
+    //console.log(oclusalInferior);
+    //console.log("aqui esta la URL de la imagen 1");
+
+    //Recibiendo URL de Oclusal Superior
     const URLimage = (imagenURL) => {
-      console.log(imagenURL);
-      console.log("aqui esta");
-      setDatosForm({uno:imagenURL})
-
+      setOclusalSuperior({uno:imagenURL})
     }
+    
+    //Recibiendo URL de Oclusal Inferior
+    const URLOclusalinferior = (imagenURL) => {
+      setOclusalInferior(imagenURL)
+    }
+
+    //Recibiendo URL de Frontal sin alineador
+    const URLFrontalSinAlineador = (imagenURL) => {
+      setFrontalSinAlineador(imagenURL)
+    }
+
+    //Recibiendo URL de Frontal Con alineador
+    const URLFrontalConAlineador = (imagenURL) => {
+      setFrontalConAlineador(imagenURL)
+    }
+
+    //Recibiendo URL de Lateral Derecho Oclusion
+    const URLLateralDerechaOclusion = (imagenURL) => {
+      setLateralDerecho(imagenURL)
+    }
+
+    //Recibiendo URL de Lateral izquierda en oclusión
+    const URLLateralizquierdaOclusion = (imagenURL) => {
+      setLateralIzquierdo(imagenURL)
+    }
+
+    //Recibiendo URL de Panorámica de cráneo
+    const URLPanoramicaCraneo = (imagenURL) => {
+      setPanoramicaCraneo(imagenURL)
+    }
+
+    //Recibiendo URL de Lateral de cráneo
+    const URLLateralCraneo = (imagenURL) => {
+      setLateralCraneo(imagenURL)
+    }
+
+    //Recibiendo URL de Area consulta
+    const URLAreaMotivoConsulta = (imagenURL) => {
+      setAreaConsulta(imagenURL)
+    }
+
+
 
      //setea valores en radio buttons
     const seEncuentra = [
@@ -92,6 +161,7 @@ console.log(datosForm);
     ];
 
     //setea valores en radio buttons
+
     const tipoAsesoria = [
         {
           label: 'Asesoría clínica',
@@ -116,13 +186,14 @@ console.log(datosForm);
     ];
     
     //Condicion segun datos de URL
-    //?treatment_id=1&treatment_status=true&admin_id=1&first_call=true
-    //?463?46?0?1
-    //0: "?treatment_id=1"
-    //1: "treatment_status_id=3"
-    //2: "admin_id=1"
-    //3: "first_call=true"
-    
+    //?treatment_id=1&has_planification=true&admin_id=1&first_call=true
+    //0: "?treatment_id=1" Id del tratamiento
+    //1: "has_planification=true/false" //SI tiene o no planificación
+    //2: "admin_id=1" // Id del administrador
+    //3: "first_call=true" // SI ya tomo la asesoría gratuita
+
+    //JS Encryptation hash / Crypto  
+
     useEffect (() => {
 
         const getUrl= window.location.search;
@@ -130,7 +201,7 @@ console.log(datosForm);
         console.log(separateUrl)
 
         //si ya existe una planificación
-        if (separateUrl[1] == "treatment_status=false" ) {
+        if (separateUrl[1] == "has_planification=false" ) {
             //console.log(window.location.search);
             console.log("Si funciona la URL");
             console.log(window.location);
@@ -258,18 +329,18 @@ console.log(datosForm);
 //modal de confirmación
 const alertaSucces=()=>{
   Swal.fire({
-  title: "Solicitaste tu cotización",
-  html: "Te enviaremos una copia de tu cotización a tu correo electrónico y nos comunicaremos contigo en un plazo de 3 días hábiles para confirmar todos los detalles.",
-  imageUrl: "https://cdn.shopify.com/s/files/1/0633/1459/1884/files/icon-done.svg?v=1706909092",
+  title: "Importante",
+  html: "Tendrás <span>10 minutos de tolerancia</span> para presentarte a tu asesoría. Después de esto daremos como finalizada la llamada y deberás agendar una nueva con costo. Si lo necesitas, <span>puedes reagendar tu asesoría hasta con 48 horas de anticipación.</span>",
+  imageUrl: iconImportant,
 imageWidth: 60,
 imageHeight: 60,
 showCloseButton: true,
-confirmButtonText: `Volver al inicio`,
+confirmButtonText: `Estoy de acuerdo`,
   customClass: {
       popup: 'popAlert',
       title: 'titlePopup',
       htmlContainer: 'textpopup',
-      confirmButton: 'clear-cart',
+      confirmButton: 'confirmBtn',
       closeButton: 'clodeBtnBtn'
 
   }
@@ -333,13 +404,21 @@ async function registrandoAsesoria(e) {
                   "fldsCZjm564gdNVgi": e.IndicaAlineador, //Alineador
                   "fldojtzk8egAZSRSR": e.TipoDeAsesoria, //Tipo de asesoría
                   "fldLHNajCHT0TiTEG": e.TextArea, //Mensaje
-                  "fldvqEwaivJsemQI2": datosForm.uno, //Ocular superurir
                   "fldyc9cZ56SFyhx9F": firstCallStatus, //Tomo asesoría gratutita?
-                  "fldLX3ThXbADUNWVK": facturaNeed, //Necesita factura
-                  
-              }
-          }],
+                  "fldLX3ThXbADUNWVK": facturaNeed, //Necesita factura     
+                  "fldvqEwaivJsemQI2": oclusalSuperior.uno, //Ocular superurir
+                  "flds3KaQIvoJveeFK": oclusalInferior, //Ocular Inferior
+                  "fldZO4I3PzPUfleB7": frontalSinAlineador, //Frontal sin alineador
+                  "fldFCAEckElCAkIJv": frontalConAlineador, //Frontal con alineador
+                  "fldTNpCcgNchP922O": lateralDerecho, //Frontal con Lateral derecho
+                  "fldkgLtSmqx7QO8pg": lateralIzquierdo, //Frontal con Lateral Izquierdo
+                  "fldM0bsdXbONDPt04": panoramicaCraneo, //Frontal con Panoramica craneo
+                  "fld0u2LXuzJYwV7PA": lateralCraneo, //Frontal con Lateral craneo
+                  "fldpqvTUDPpVp7JnF": areaConsulta, //Frontal con Area motivo consulta
+      }}],
+
           "typecast": true
+
       })
   });
 
@@ -372,12 +451,14 @@ return (
             <div 
             style={{
                 width: '450px',
+                marginBottom: '40px'
 
             }}>
             {/* El caso se encuentra en */}
             <div className={`wrapp-radio-group${changeclass}`}>
                 <p className='text-head-group-radio'>El caso se encuentra</p>
                 <Form.Item
+                className='wrapp-each-item-form'
                 name="ElcasoSeEncuentra"
                 rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
@@ -389,11 +470,11 @@ return (
             <div className={`wrapp-radio-group${changeclassEnboca}`}>
                 <p className='text-head-group-radio'>El caso se encuentra en el alineador </p>
                 <Form.Item
+                className='wrapp-each-item-form'
                 name="IndicaAlineador"
-                
                 rules={[{ required: inputAlineador, message: 'Ingrese el alineador' }]}
                 >
-                <Input placeholder="Indica el alineador" />
+                <Input className='input-text' placeholder="Indica el alineador" />
                 </Form.Item>  
             </div>
 
@@ -402,6 +483,7 @@ return (
                 <p className='text-head-group-radio'>Tipo de asesoría</p>
                 <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
                 <Form.Item
+                className='wrapp-each-item-form'
                 name="TipoDeAsesoria"
                 rules={[{ required: inputTasesoria, message: 'Elije una opcion' }]}
                 >
@@ -418,8 +500,8 @@ return (
             <p className='text-head-group-radio'>Motivo de consulta</p>
             <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
             <Form.Item
+            className='wrapp-each-item-form'
             name="TextArea"
-            
             rules={[{ required: true, message: 'Campo obligatorio' }]}
             >      
             <Input.TextArea  rows={5} placeholder="Indica el motivo de consulta" />
@@ -430,13 +512,15 @@ return (
             <div className={`wrapp-radio-group${hideShowFactura}`}>
                 <p className='text-head-group-radio'>¿Necesita facturar tu asesoría?</p>
                 <Form.Item
+                className='wrapp-each-item-form'
                 name="NecesitaFactura"
                 rules={[{ required: inputNecesitaFactura, message: 'Elije una opcion' }]}
                 >  
-                    <Radio.Group onChange={onFactura} value={values} options={factura} className='text-radio'>
-                            
-                    </Radio.Group>
+                    <Radio.Group onChange={onFactura} value={values} options={factura} className='text-radio'>       
+                    </Radio.Group>  
                 </Form.Item>
+                <p className='info-text-red'>*Si en el Portal B360 no tienes un Perfil Fiscal predeterminado, no se generará tu factura.</p>
+               
                 
             </div>
             </div>
@@ -466,18 +550,22 @@ return (
             >
             <div className='wrapp-upload-content'>
             <UploadFile URLimage={URLimage} />
-            <UploadFile />
-            <UploadFile />
-            <UploadFile />
+            <Oclusalinferior URLOclusalinferior={URLOclusalinferior}  />
+            <FrontalSinAlineador URLFrontalSinAlineador={URLFrontalSinAlineador} />
+            <FrontalConAlineador URLFrontalConAlineador={URLFrontalConAlineador} />
+            <LateralDerechaOclusion URLLateralDerechaOclusion={URLLateralDerechaOclusion} />
+            <LateralizquierdaOclusion URLLateralizquierdaOclusion={URLLateralizquierdaOclusion} />
+            <PanoramicaCraneo URLPanoramicaCraneo={URLPanoramicaCraneo} />
+            <LateralCraneo URLLateralCraneo={URLLateralCraneo} />
+            <AreaMotivoConsulta URLAreaMotivoConsulta={URLAreaMotivoConsulta} />
             </div>
             </Form.Item>
 
-
             </div>
             </div>
-            
-            <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
+            <Form.Item >
                 <Button 
+                className='btn-siguiente'
                 type="primary" 
                 htmlType="submit" 
                 loading={loadings[0]} 

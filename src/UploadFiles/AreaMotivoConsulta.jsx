@@ -3,7 +3,7 @@ import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { message, Upload, Form } from 'antd';
 import './UploadFile.css';
 //assets
-import add1 from './assets/add.png';
+import add1 from '../assets/area-motivo.png';
 
 const getBase64 = (img, callback) => {
   const reader = new FileReader();
@@ -11,6 +11,7 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 };
 
+//valida el formato de la imagen
 const beforeUpload = (file) => {
   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
   if (!isJpgOrPng) {
@@ -23,23 +24,19 @@ const beforeUpload = (file) => {
   return isJpgOrPng && isLt2M;
 };
 
+//Envia la URL al componente Padre
+const AreaMotivoConsulta = ({URLAreaMotivoConsulta}) => {
 
-const UploadFile = ({URLimage}) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("");
- 
 
-  
-  const handleChange = async (e) => {
-
+const handleChange = async (e) => {
     if (e.file.status === 'uploading') {
-        setLoading(true);
-        
+        setLoading(true);   
     return;
       }
       console.log(e)
-        
         const files = e.file.originFileObj;
         const data = new FormData();
         data.append("file", files)
@@ -63,16 +60,10 @@ const UploadFile = ({URLimage}) => {
             setLoading(false);
             setImageUrl(file.secure_url); 
             console.log(file.secure_url)
-            //enviamos datos al componente padre
-            URLimage(file.secure_url);
-        };
-
-       
-    
-        // Get this url from response in real world.
-    
-    
-    
+            //enviamos datos URL al componente padre
+            URLAreaMotivoConsulta(file.secure_url);
+        };   
+// Get this url from response in real world.   
 }
 
   const uploadButton = (
@@ -98,48 +89,56 @@ const UploadFile = ({URLimage}) => {
 
   return (
     <div className='card-upload'>
-        <div className='wrapp-component-upload'>
-          <div className='wrapp-head-text-component-uploiad'>
-            <p className='info-text'>Fotografía intraoral</p>
-            <p className='info-text-strong'>Oclusal superior</p>
+      <div className='wrapp-head-text-component-uploiad'>
+            <p className='info-text'>*Debe mostrar claramente el motivo de la consulta.</p>
+            <p className='info-text-strong'>Área del motivo de consulta</p>
           </div>
+      <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '1fr 1fr'
+         }}
+      > 
+        <div className='wrapp-component-upload'>
+          
         
-      <Form.Item
-      >
-               
-        <Upload.Dragger
-       
-        listType="picture-card"
-        className="avatar-uploader"
-        showUploadList={false}
-        //action="http://localhost:3000/"
-        beforeUpload={beforeUpload}
-        onChange={handleChange}
-        
-        getValueFromEvent={imageUrl}
-        >
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="avatar"
-              style={{
-                width: '100%',
-                height: '136px',
-                objectFit: 'cover',
-              }}
-            />
-          ) : (
-            uploadButton
-          )}
-        </Upload.Dragger>
+        <Form.Item
+        className="wrapp-upload-form-item"
+        >        
+          <Upload.Dragger
+          listType="picture-card"
+          className="avatar-uploader"
+          showUploadList={false}
+          //action="http://localhost:3000/"
+          beforeUpload={beforeUpload}
+          onChange={handleChange}
+          
+          getValueFromEvent={imageUrl}
+          >
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="avatar"
+                style={{
+                  width: '100%',
+                  height: '136px',
+                  objectFit: 'cover',
+                  borderRadius: '8px'
+                }}
+              />
+            ) : (
+              uploadButton
+            )}
+          </Upload.Dragger>
         </Form.Item> 
         </div>
       <div className='wrapp-img-example-car-upload'>
         <img src={add1} alt="" />
+      </div>
       </div>
       
     </div>
   );
 };
 
-export { UploadFile };
+export { AreaMotivoConsulta };
