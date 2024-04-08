@@ -102,9 +102,9 @@ const UploadFile = ({URLimage}) => {
          }}
       > 
         <div className='wrapp-component-upload'>
-          <Form.Item
+        <Form.Item
           className="wrapp-upload-form-item"
-          >       
+          >    
             <Upload.Dragger
             listType="picture-card"
             className="avatar-uploader"
@@ -113,6 +113,7 @@ const UploadFile = ({URLimage}) => {
             beforeUpload={beforeUpload}
             onChange={handleChange}
             getValueFromEvent={imageUrl}
+            
             >
               {imageUrl ? (
                 <img
@@ -129,7 +130,8 @@ const UploadFile = ({URLimage}) => {
                 uploadButton
               )}
             </Upload.Dragger>
-          </Form.Item> 
+            </Form.Item>
+          
         </div>
         <div className='wrapp-img-example-car-upload'>
           <img src={add1} alt="" />

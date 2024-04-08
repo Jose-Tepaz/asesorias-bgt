@@ -200,3 +200,42 @@ textarea {
     height: 700px!important;
     width: 100%!important;
 }
+
+div:where(.swal2-container) button:where(.swal2-close):focus {
+    box-shadow: none!important;
+}
+
+.popAlert {
+    width: 456px;
+}
+
+.backdropPopup {
+    background: #000;
+}
+
+.testss {
+    background: #fff;
+}
+
+.textpopup-pay {
+    font-family: 'Neue montreal';
+    font-size: 18px!important;
+    font-weight: 400!important;
+    margin: 0px;
+    padding: 0px;
+    text-align: justify!important;
+    color: #757575;
+}
+
+.textpopup-pay li {
+    margin-bottom: 16px;
+}
+
+.textpopup-pay span {
+    color: #C60E02;
+}
+
+.textpopup-pay strong {
+    color: #595959;
+    font-weight: 500!important;
+}

@@ -17,6 +17,7 @@ import { Testupload } from './Testupload';
 import {useState} from 'react';
 import alerticon from './alert-icon.svg';
 import iconImportant from './assets/icon-alert-important.svg';
+import AlertError from './assets/status-icon.svg';
 import Swal from 'sweetalert2';
 
 const { TextArea } = Input;
@@ -60,12 +61,12 @@ function FormAsesorias () {
     const [activCalendly, setActivCalendly] = useState(null);
 
     //Estado que muestra u oculta el area  de factura
-    const [facturaIs, setFacturaIs] = useState(null);
+    const [facturaIs, setFacturaIs] = useState(false);
 
     //Estado que envia el dato a Airtable si necesita o no factura
     const [facturaNeed, setFacturaNeed] = useState(false);
 
-    //Ya tomo su primera acesoría 
+    //Ya tomo su primera acesoría, tomamos este dato para mandarlo a Airtable
     const [firstCallStatus, setFirstCallStatus] = useState(null);
 
     // Ya tiene una planificación
@@ -205,13 +206,13 @@ function FormAsesorias () {
 
         const getUrl= window.location.search;
         const separateUrl = getUrl.split("&");
-        console.log(separateUrl)
+        //console.log(separateUrl)
 
         //si ya existe una planificación
         if (separateUrl[1] == "has_planification=false" ) {
             //console.log(window.location.search);
-            console.log("Si funciona la URL");
-            console.log(window.location);
+            //console.log("Si funciona la URL");
+            //console.log(window.location);
            //const activeModuleForm = setComponentDisabled(true);
             //setActive1();
             //defini si los campos serás requeridos
@@ -224,12 +225,21 @@ function FormAsesorias () {
 
             setTratmentStatus(false)
 
-        } else if (separateUrl[3] == "first_call=true" ){
-          
+        } else if (separateUrl[3] === "first_call=true" ){
+          //campo requerido o no
           setInputNecesitaFactura(true);
+          //muestra o no el campo
           setFirstCallStatus(true)
 
-        }else {
+        }else if (separateUrl[3] === "first_call=false" ){
+          //campo requerido o no
+          setInputNecesitaFactura(false);
+          //muestra o no el campo
+          setFirstCallStatus(false)
+
+        } 
+        
+        else {
           setFacturaIs("mostrar");
           setComponentNoRequerid(true);
           setInputTasesoria(true);
@@ -237,16 +247,21 @@ function FormAsesorias () {
 
           setTratmentStatus(true)
           setFirstCallStatus(false)
-          setActivForm("false");
+          //setActivForm("false");
+          
+          alertaError();
+          //alertaPay();
+          //alertaSucces();
+        
         
     }
+   
         
     });
-
     //Oculta o muestra el area del form
     let changeclass = componentDisabled1 != null ? ' none-div' : '';
     let changeclassEnboca = casoEnBoca == null ? ' none-div' : '';
-    let hideShowFactura = facturaIs != null ? ' none-div' : '';
+    let hideShowFactura = firstCallStatus != true ? ' none-div' : '';
     
 
   //On change group el caso se encuentra
@@ -289,9 +304,19 @@ function FormAsesorias () {
         
         setActiveUploadImg(null)
       }
-      
+      isPaythisEvent()
     };
 
+    // Esta funcion se ejecuta para mostrar popup si es una planbificación que se debe cobrar
+    function isPaythisEvent() {
+      const getUrl= window.location.search;
+      const separateUrl = getUrl.split("&");
+      console.log("se esta ejecutando")
+
+      if (separateUrl[3] == "first_call=true") {
+        alertaPay();
+      }
+    }
     //On Factura
     const onFactura = (e) => {
       console.log('radio checked', e.target.value);
@@ -343,6 +368,7 @@ const alertaSucces=()=>{
 imageWidth: 60,
 imageHeight: 60,
 showCloseButton: true,
+backdrop: `testss`,
 confirmButtonText: `Estoy de acuerdo`,
   customClass: {
       popup: 'popAlert',
@@ -367,23 +393,58 @@ let ocultaForm = activForm === "false" ? ' none-div' : '';
 //modal de error
 const alertaError=()=>{
   Swal.fire({
-  title: "No pudimos solicitar tu cotización",
-  html: "Lo sentimos, pero algo ha salido mal al procesar tu solicitud. Por favor, verifica tu conexión a internet e inténtalo de nuevo.",
-  imageUrl: "https://cdn.shopify.com/s/files/1/0633/1459/1884/files/icon-error.svg?v=1706911874",
+  title: "Algo salió mal...",
+  html: "Hemos tenido un problema para cargar la información necesaria para agendar tu asesoría. Por favor vuelve a intentarlo. ",
+  imageUrl: AlertError,
 imageWidth: 60,
 imageHeight: 60,
-showCloseButton: true,
+showCloseButton: false,
+showConfirmButton: false,
+backdrop: '#F6F6F8',
+allowEnterKey: false,
+allowEscapeKey: false,
+allowOutsideClick: false,
 confirmButtonText: `Volver a intentarlo`,
   customClass: {
       popup: 'popAlert',
       confirmButton: 'btn-siguiente',
       title: 'titlePopup',
       htmlContainer: 'textpopup',
-      closeButton: 'clodeBtnBtn'
+      closeButton: 'clodeBtnBtn',
+      
 
   }
 }).then((result) => {
   
+});
+}
+
+//modal asesorpia debe cobrarse
+
+const alertaPay=()=>{
+  Swal.fire({
+  title: "Antes de continuar",
+  html: "<ul><li>Ya tuviste tu asesoría clínica gratuita, por lo que <span>esta asesoría tendrá un costo de $1.00 MXN.</span></li><li>Asegúrate de que el Perfil Fiscal que tienes configurado en el Portal B360 <strong>sea el que deseas utilizar para facturar tu asesoría.</strong></li><li>Si no has establecido un Perfil Fiscal predeterminado aún, puedes hacerlo desde tu Perfil en el Portal B360; de lo contrario no te generaremos factura. <span>Podrás seleccionar la opción ‘No necesito factura’.</span></li></ul>",
+  
+  imageUrl: AlertError,
+imageWidth: 60,
+imageHeight: 60,
+showCloseButton: true,
+showConfirmButton: false,
+backdrop: '#F6F6F8',
+allowEnterKey: true,
+allowEscapeKey: true,
+allowOutsideClick: true,
+confirmButtonText: `Volver a intentarlo`,
+  customClass: {
+      popup: 'popAlert',
+      confirmButton: 'btn-siguiente',
+      title: 'titlePopup',
+      htmlContainer: 'textpopup-pay',
+      closeButton: 'clodeBtnBtn',
+      
+
+  }
 });
 }
 
@@ -502,7 +563,7 @@ return (
                 rules={[{ required: inputTasesoria, message: 'Elije una opcion' }]}
                 >
                     
-                    <Radio.Group onChange={onChanges} value={values} options={tipoAsesoria} className='text-radio'>
+                    <Radio.Group onChange={onChanges} isPaythisEvent={isPaythisEvent} value={values} options={tipoAsesoria} className='text-radio'>
                             
                     </Radio.Group>
                 </Form.Item>
@@ -559,11 +620,11 @@ return (
             
             </div>
             
-            <Form.Item
             
-            >
             <div className='wrapp-upload-content'>
+            
             <UploadFile URLimage={URLimage} />
+            
             <Oclusalinferior URLOclusalinferior={URLOclusalinferior}  />
             <FrontalSinAlineador URLFrontalSinAlineador={URLFrontalSinAlineador} />
             <FrontalConAlineador URLFrontalConAlineador={URLFrontalConAlineador} />
@@ -573,7 +634,7 @@ return (
             <LateralCraneo URLLateralCraneo={URLLateralCraneo} />
             <AreaMotivoConsulta URLAreaMotivoConsulta={URLAreaMotivoConsulta} />
             </div>
-            </Form.Item>
+            
 
             </div>
             </div>
