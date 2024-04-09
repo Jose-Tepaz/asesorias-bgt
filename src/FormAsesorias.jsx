@@ -76,31 +76,31 @@ function FormAsesorias () {
     const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
 
     //Recibe URL imagen 1
-    const [oclusalSuperior, setOclusalSuperior] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [oclusalSuperior, setOclusalSuperior] = useState('');
 
     //Recibe URL imagen Oclusal inferior
-    const [oclusalInferior, setOclusalInferior] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [oclusalInferior, setOclusalInferior] = useState('');
 
     //Recibe URL imagen Frontal Sin Alineador
-    const [frontalSinAlineador, setFrontalSinAlineador] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [frontalSinAlineador, setFrontalSinAlineador] = useState('');
 
     //Recibe URL imagen Frontal Con alineador
-    const [frontalConAlineador, setFrontalConAlineador] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [frontalConAlineador, setFrontalConAlineador] = useState('');
 
     //Recibe URL imagen Lateral derecha
-    const [lateralDerecho, setLateralDerecho] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [lateralDerecho, setLateralDerecho] = useState('');
 
     //Recibe URL imagen Lateral Izquierda
-    const [lateralIzquierdo, setLateralIzquierdo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [lateralIzquierdo, setLateralIzquierdo] = useState('');
 
     //Panorámica de cráneo
-    const [panoramicaCraneo, setPanoramicaCraneo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [panoramicaCraneo, setPanoramicaCraneo] = useState('');
      
     //Recibe imagen Lateral de cráneo
-    const [lateralCraneo, setLateralCraneo] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [lateralCraneo, setLateralCraneo] = useState('');
 
     //Recibe imagen Área de consulta
-    const [areaConsulta, setAreaConsulta] = useState('https://res.cloudinary.com/dxnm9opuh/image/upload/v1710900026/descarga_zilwpk.png');
+    const [areaConsulta, setAreaConsulta] = useState('');
 
 
     //console.log(datosForm);
@@ -194,7 +194,7 @@ function FormAsesorias () {
     ];
     
     //Condicion segun datos de URL
-    //?treatment_id=1&has_planification=true&admin_id=1&first_call=true
+    // /?treatment_id=1&has_planification=true&admin_id=1&first_call=true
     //0: "?treatment_id=1" Id del tratamiento
     //1: "has_planification=true/false" //SI tiene o no planificación
     //2: "admin_id=1" // Id del administrador
@@ -222,6 +222,7 @@ function FormAsesorias () {
             setComponentDisabled1("none-div");
             setActiveUploadImg("activemos");
             setFacturaIs("non-div");
+            setInputNecesitaFactura(false);
 
             setTratmentStatus(false)
 
@@ -431,7 +432,6 @@ imageWidth: 60,
 imageHeight: 60,
 showCloseButton: true,
 showConfirmButton: false,
-backdrop: '#F6F6F8',
 allowEnterKey: true,
 allowEscapeKey: true,
 allowOutsideClick: true,

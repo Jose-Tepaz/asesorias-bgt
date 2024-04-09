@@ -33,11 +33,7 @@ const Oclusalinferior = ({URLOclusalinferior}) => {
 
   const handleChange = async (e) => {
 
-    if (e.file.status === 'uploading') {
-        setLoading(true);
-        
-    return;
-      }
+   try {
       console.log(e)
         
         const files = e.file.originFileObj;
@@ -65,7 +61,10 @@ const Oclusalinferior = ({URLOclusalinferior}) => {
             console.log(file.secure_url)
             //enviamos datos al componente padre
             URLOclusalinferior(file.secure_url);
-        };   
+        }; 
+      } catch (error) {
+        console.log(error);
+      }  
 // Get this url from response in real world.   
 }
 
@@ -96,7 +95,7 @@ const Oclusalinferior = ({URLOclusalinferior}) => {
         
         <div className='wrapp-head-text-component-uploiad'>
             <p className='info-text'>Fotografía intraoral</p>
-            <p className='info-text-strong'>Oclusal superior</p>
+            <p className='info-text-strong'>Oclusal inferior</p>
         </div>
         <div
         style={{

@@ -32,10 +32,7 @@ const LateralCraneo = ({URLLateralCraneo}) => {
   const [image, setImage] = useState("");
 
 const handleChange = async (e) => {
-    if (e.file.status === 'uploading') {
-        setLoading(true);   
-    return;
-      }
+    try {
       console.log(e)
         const files = e.file.originFileObj;
         const data = new FormData();
@@ -63,6 +60,9 @@ const handleChange = async (e) => {
             //enviamos datos URL al componente padre
             URLLateralCraneo(file.secure_url);
         };   
+      } catch (error) {
+        console.log(error);
+      }
 // Get this url from response in real world.   
 }
 

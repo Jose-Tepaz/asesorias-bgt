@@ -11,18 +11,7 @@ const getBase64 = (img, callback) => {
   reader.readAsDataURL(img);
 };
 
-//valida el formato de la imagen
-const beforeUpload = (file) => {
-  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-  if (!isJpgOrPng) {
-    message.error('You can only upload JPG/PNG file!');
-  }
-  const isLt2M = file.size / 1024 / 1024 < 2;
-  if (!isLt2M) {
-    message.error('Image must smaller than 2MB!');
-  }
-  return isJpgOrPng && isLt2M;
-};
+
 
 //Envia la URL al componente Padre
 const UploadFile = ({URLimage}) => {
@@ -30,14 +19,26 @@ const UploadFile = ({URLimage}) => {
   const [imageUrl, setImageUrl] = useState();
   const [image, setImage] = useState("");
 
+
+  //valida el formato de la imagen
+const beforeUpload = (file) => {
+  const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+  if (!isJpgOrPng) {
+    message.error('You can only upload JPG/PNG file!');
+  }
+  const isLt2M = file.size / 1024 / 1024 < 1;
+  if (!isLt2M) {
+    message.error('Image must smaller than 1MB!');
+    
+  }
+  return isJpgOrPng && isLt2M;
+ 
+};
+
   const handleChange = async (e) => {
 
-    if (e.file.status === 'uploading') {
-        setLoading(true);
-        
-    return;
-      }
-      console.log(e)
+      try {
+        console.log(e)
         
         const files = e.file.originFileObj;
         const data = new FormData();
@@ -64,7 +65,12 @@ const UploadFile = ({URLimage}) => {
             console.log(file.secure_url)
             //enviamos datos al componente padre
             URLimage(file.secure_url);
-        };   
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+      
 // Get this url from response in real world.   
 }
 
@@ -110,8 +116,8 @@ const UploadFile = ({URLimage}) => {
             className="avatar-uploader"
             showUploadList={false}
             //action="http://localhost:3000/"
-            beforeUpload={beforeUpload}
             onChange={handleChange}
+            beforeUpload={beforeUpload}
             getValueFromEvent={imageUrl}
             
             >

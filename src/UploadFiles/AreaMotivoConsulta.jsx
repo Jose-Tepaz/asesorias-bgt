@@ -32,10 +32,7 @@ const AreaMotivoConsulta = ({URLAreaMotivoConsulta}) => {
   const [image, setImage] = useState("");
 
 const handleChange = async (e) => {
-    if (e.file.status === 'uploading') {
-        setLoading(true);   
-    return;
-      }
+    try{
       console.log(e)
         const files = e.file.originFileObj;
         const data = new FormData();
@@ -62,7 +59,10 @@ const handleChange = async (e) => {
             console.log(file.secure_url)
             //enviamos datos URL al componente padre
             URLAreaMotivoConsulta(file.secure_url);
-        };   
+        };  
+        } catch (error){
+          console.log(error)
+        }
 // Get this url from response in real world.   
 }
 
