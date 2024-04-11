@@ -225,6 +225,7 @@ function FormAsesorias () {
             setInputNecesitaFactura(false);
 
             setTratmentStatus(false)
+            setFirstCallStatus(false)
 
         } else if (separateUrl[3] === "first_call=true" ){
           //campo requerido o no
@@ -263,6 +264,8 @@ function FormAsesorias () {
     let changeclass = componentDisabled1 != null ? ' none-div' : '';
     let changeclassEnboca = casoEnBoca == null ? ' none-div' : '';
     let hideShowFactura = firstCallStatus != true ? ' none-div' : '';
+    //Oculta o muestra ya tomo planificación
+    let hideShowIsFree = firstCallStatus != false ? ' none-div' : '';
     
 
   //On change group el caso se encuentra
@@ -364,12 +367,15 @@ function FormAsesorias () {
 const alertaSucces=()=>{
   Swal.fire({
   title: "Importante",
-  html: "Tendrás <span>10 minutos de tolerancia</span> para presentarte a tu asesoría. Después de esto daremos como finalizada la llamada y deberás agendar una nueva con costo. Si lo necesitas, <span>puedes reagendar tu asesoría hasta con 48 horas de anticipación.</span>",
+  html: "Tendrás <span>10 minutos de tolerancia</span> para presentarte a tu asesoría. Después de esto daremos como finalizada la llamada y deberás agendar una nueva con costo.</br> Si lo necesitas, <span>puedes reagendar tu asesoría hasta con 48 horas de anticipación.</span>",
   imageUrl: iconImportant,
 imageWidth: 60,
 imageHeight: 60,
-showCloseButton: true,
+showCloseButton: false,
 backdrop: `testss`,
+allowEnterKey: false,
+allowEscapeKey: false,
+allowOutsideClick: false,
 confirmButtonText: `Estoy de acuerdo`,
   customClass: {
       popup: 'popAlert',
@@ -430,15 +436,15 @@ const alertaPay=()=>{
   imageUrl: AlertError,
 imageWidth: 60,
 imageHeight: 60,
-showCloseButton: true,
-showConfirmButton: false,
-allowEnterKey: true,
-allowEscapeKey: true,
-allowOutsideClick: true,
-confirmButtonText: `Volver a intentarlo`,
+showCloseButton: false,
+showConfirmButton: true,
+allowEnterKey: false,
+allowEscapeKey: false,
+allowOutsideClick: false,
+confirmButtonText: `Estoy de acuerdo`,
   customClass: {
       popup: 'popAlert',
-      confirmButton: 'btn-siguiente',
+      confirmButton: 'confirmBtn',
       title: 'titlePopup',
       htmlContainer: 'textpopup-pay',
       closeButton: 'clodeBtnBtn',
@@ -518,15 +524,26 @@ return (
             onFinish={registrandoAsesoria}
             
             >
-            <div className='head-form'>
+            {/* header si ya tomo asesoría gratuita */}
+            
+            <div
+            className={`head-form${hideShowFactura}`}
+            >
                <h2 className='head-master-form'>Agenda tu asesoría</h2>
                <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
+            </div>
+            {/* header si aún no tomo asesoría gratuita */}
+            <div 
+            className={`head-form${hideShowIsFree}`}
+            >
+               <h2 className='head-master-form'>Agenda tu asesoría</h2>
+               <p className='info-text'>Ingresa la información para agendar tu asesoría gratuita.</p>
             </div>
             {/* Wrapp form part checkbox and inputs */}
             <div 
             style={{
                 width: '450px',
-                marginBottom: '40px'
+                marginBottom: '0px'
 
             }}>
             {/* El caso se encuentra en */}
@@ -573,7 +590,7 @@ return (
             {/* Motivo de consulta */}
             <div className='wrapp-radio-group'>
             <p className='text-head-group-radio'>Motivo de consulta</p>
-            <p className='info-text'>Selecciona la asesoría que mejor se adapte al motivo de consulta.</p>
+            <p className='info-text'>Detalla a profundidad el motivo de consulta. Esto facilitará la asesoría.</p>
             <Form.Item
             className='wrapp-each-item-form'
             name="TextArea"
@@ -594,7 +611,14 @@ return (
                     <Radio.Group onChange={onFactura} value={values} options={factura} className='text-radio'>       
                     </Radio.Group>  
                 </Form.Item>
+                <div
+                style={{
+                  marginBottom: '40px'
+              }}
+                >
                 <p className='info-text-red'>*Si en el Portal B360 no tienes un Perfil Fiscal predeterminado, no se generará tu factura.</p>
+                </div>
+                
                
                 
             </div>

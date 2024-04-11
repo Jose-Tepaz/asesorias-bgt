@@ -124,7 +124,7 @@ const Oclusalinferior = ({URLOclusalinferior}) => {
                     width: '100%',
                     height: '136px',
                     objectFit: 'cover',
-                    borderRadius: '8px'
+                    borderRadius: '12px'
                   }}
                 />
               ) : (

@@ -90,7 +90,7 @@ const handleChange = async (e) => {
   return (
     <div className='card-upload'>
       <div className='wrapp-head-text-component-uploiad'>
-            <p className='info-text'>Fotografía intraoral</p>
+            <p className='info-text'>Radiografía</p>
             <p className='info-text-strong'>Panorámica de cráneo</p>
           </div>
       <div
@@ -121,7 +121,7 @@ const handleChange = async (e) => {
                   width: '100%',
                   height: '136px',
                   objectFit: 'cover',
-                  borderRadius: '8px'
+                  borderRadius: '12px'
                 }}
               />
             ) : (
