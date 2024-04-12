@@ -73,7 +73,7 @@ function FormAsesorias () {
     const [tratmentStatus, setTratmentStatus] = useState(null);
 
     //array para setear tipoAsesoria
-    const [tipoAsesoriaArr, serTipoAsesoriaArr] = useState("");
+    const [tipoAsesoriaArr, setTipoAsesoriaArr] = useState("");
 
     //Recibe URL imagen 1
     const [oclusalSuperior, setOclusalSuperior] = useState('');
@@ -102,7 +102,13 @@ function FormAsesorias () {
     //Recibe imagen Área de consulta
     const [areaConsulta, setAreaConsulta] = useState('');
 
+    //Active lateral craneo
+    const [activeLateralCraneo, setActiveLateralCraneo] = useState(false);
 
+    //Muestro el head con infromacion gratuita o de paga
+    const [headType, setHeadType] = useState(false);
+
+    
     //console.log(datosForm);
     //console.log(oclusalInferior);
     //console.log("aqui esta la URL de la imagen 1");
@@ -158,12 +164,12 @@ function FormAsesorias () {
     const seEncuentra = [
       {
         label: 'En boca',
-        value: 'En boca',
+        value: "En boca",
        
       },
       {
         label: 'No está en boca',
-        value: 'No está en boca',
+        value: "No está en boca",
         
       },
     ];
@@ -209,7 +215,7 @@ function FormAsesorias () {
         //console.log(separateUrl)
 
         //si ya existe una planificación
-        if (separateUrl[1] == "has_planification=false" ) {
+        if (separateUrl[1] === "has_planification=false" ) {
             //console.log(window.location.search);
             //console.log("Si funciona la URL");
             //console.log(window.location);
@@ -228,16 +234,17 @@ function FormAsesorias () {
             setFirstCallStatus(false)
 
         } else if (separateUrl[3] === "first_call=true" ){
-          //campo requerido o no
-          setInputNecesitaFactura(true);
-          //muestra o no el campo
-          setFirstCallStatus(true)
+          ////campo requerido o no
+          //setInputNecesitaFactura(true);
+          ////muestra o no el campo
+          //setFirstCallStatus(true)
 
         }else if (separateUrl[3] === "first_call=false" ){
           //campo requerido o no
-          setInputNecesitaFactura(false);
-          //muestra o no el campo
-          setFirstCallStatus(false)
+          //setInputNecesitaFactura(false);
+          ////muestra o no el campo
+          //setFirstCallStatus(false)
+          setHeadType(true);
 
         } 
         
@@ -260,55 +267,70 @@ function FormAsesorias () {
    
         
     });
-    //Oculta o muestra el area del form
-    let changeclass = componentDisabled1 != null ? ' none-div' : '';
-    let changeclassEnboca = casoEnBoca == null ? ' none-div' : '';
-    let hideShowFactura = firstCallStatus != true ? ' none-div' : '';
-    //Oculta o muestra ya tomo planificación
-    let hideShowIsFree = firstCallStatus != false ? ' none-div' : '';
+   
     
 
   //On change group el caso se encuentra
-    const onChange = (e) => {
+//Guarda el valo en boca para luego utilizarlo como parametro para mostrar componente de subidad de archivos
+
+const [isTrueSiEnBoca, setIsTrueSiEnBoca] = useState(false);
+ 
+const onElCasoSeEncuentra = (e) => {
     console.log('radio checked', e.target.value);
-    setValue(e.target.value);
-    if (e.target.value === "En boca"){
+    //setValue(e.target.value);
+    
+       
+    if (e.target.value === "En boca") {
       setCasoEnBoca(e.target.value);
-
-      setActiveUploadImg("activemos");
+      //setActiveUploadImg("activemos");
       setInputAlineador(true);
-      
-
-           
-    } else {
+      setIsTrueSiEnBoca(true);
+    } else  {
+      setIsTrueSiEnBoca(false);
       setInputAlineador(false);
-        setCasoEnBoca(null);
-        setActiveUploadImg(null);
-        
-        
-    }
-    serTipoAsesoriaArr(e.target.value);
-   
-    };
+      setCasoEnBoca(null);
+     // setActiveUploadImg(null);
+     
+      //console.log(e.target.value);
+      //console.log("veamos que esta pasando")
+      
+    } 
+    setTipoAsesoriaArr(e.target.value);
+    //showUploadComponents();
+    console.log(isTrueSiEnBoca)
+    
+};
+
 
 //On change TIpo de asesoria
+//Guarda el valo true del radio para luego utilizarlo como parametro para mostrar componente de subidad de archivos
+const [isTrueUpload, setIsTrueUpload] = useState(null);
+
     const onChanges = (e) => {
       console.log('radio checked', e.target.value);
       setValues(e.target.value);
-      if (e.target.value === "En boca Asesoría clinica") {
+      
+      if (e.target.value === "Asesoría clinica") {
+        //setIsTrueUpload(true);
+        setActiveLateralCraneo(false)
+        //setActiveUploadImg("activemos")
+        isPaythisEvent();
+        //showUploadComponents();
+        setIsTrueUpload(true);
         
-        setActiveUploadImg("activemos")
-      } else if (e.target.value === "En boca Planificación") {
-        setActiveUploadImg("activemos")
+       
+      } else if (e.target.value === "Asesoría de planificación") {
+        //setActiveUploadImg("activemos")
+        setActiveLateralCraneo(true) 
+        ////campo requerido o no
+        setInputNecesitaFactura(true);
+        //muestra o no el campo
+        setFirstCallStatus(true)
         
-      }else if (e.target.value === "No esta en boca Asesoriía clinica") {
-        setActiveUploadImg(null)
-        
-      }else if (e.target.value === "No esta en boca Planificacion") {
-        
-        setActiveUploadImg(null)
+        //setIsTrueUpload(true);
+       
       }
-      isPaythisEvent()
+      
     };
 
     // Esta funcion se ejecuta para mostrar popup si es una planbificación que se debe cobrar
@@ -317,10 +339,29 @@ function FormAsesorias () {
       const separateUrl = getUrl.split("&");
       console.log("se esta ejecutando")
 
-      if (separateUrl[3] == "first_call=true") {
+      if (separateUrl[3] === "first_call=false") {
         alertaPay();
+         ////campo requerido o no
+         setInputNecesitaFactura(false);
+         //muestra o no el campo
+         setFirstCallStatus(false)
       }
     }
+
+    //Esta funcion defini si se muestra o no el componente para subir archivos
+
+    useEffect (() => {
+      
+        if (isTrueSiEnBoca && isTrueUpload) {
+          setActiveUploadImg("activemos");
+        } else {
+          setActiveUploadImg(null);
+        }
+        console.log("ls datos es nuii", isTrueSiEnBoca, isTrueUpload)
+      
+},[isTrueUpload]);
+    
+
     //On Factura
     const onFactura = (e) => {
       console.log('radio checked', e.target.value);
@@ -334,6 +375,18 @@ function FormAsesorias () {
       }
       
     };
+
+     //Oculta o muestra el area del form
+     let changeclass = componentDisabled1 != null ? ' none-div' : '';
+     let changeclassEnboca = casoEnBoca == null ? ' none-div' : '';
+     //let hideShowFactura = firstCallStatus != true ? ' none-div' : '';
+     let hideShowFactura = firstCallStatus != false ? ' none-div' : '';
+     //Oculta o muestra ya tomo planificación
+     let hideShowIsFree = firstCallStatus != true ? ' none-div' : '';
+    //Sete que tipo de head mostras, gratis o de paga
+     let headTypeStart = headType != false ? ' none-div' : '';
+
+
 
     let activeUploadImgstart = activeUploadImg == null ? ' none-div' : '';
 
@@ -527,18 +580,12 @@ return (
             {/* header si ya tomo asesoría gratuita */}
             
             <div
-            className={`head-form${hideShowFactura}`}
+            className={`head-form`}
             >
                <h2 className='head-master-form'>Agenda tu asesoría</h2>
-               <p className='info-text'>Ingresa la información para agendar tu asesoría.</p>
+               <p className='info-text'>Ingresa la información para agendar tu asesoría <span  className={`test${headTypeStart}`}>gratuita</span>.</p>
             </div>
-            {/* header si aún no tomo asesoría gratuita */}
-            <div 
-            className={`head-form${hideShowIsFree}`}
-            >
-               <h2 className='head-master-form'>Agenda tu asesoría</h2>
-               <p className='info-text'>Ingresa la información para agendar tu asesoría gratuita.</p>
-            </div>
+            
             {/* Wrapp form part checkbox and inputs */}
             <div 
             style={{
@@ -554,7 +601,7 @@ return (
                 name="ElcasoSeEncuentra"
                 rules={[{ required: componentNoRequerid, message: 'Elije una opcion' }]}
                 >
-                <Radio.Group onChange={onChange}  value={value} options={seEncuentra}  className='text-radio'>        
+                <Radio.Group onChange={onElCasoSeEncuentra}  value={value} options={seEncuentra}  className='text-radio'>        
                 </Radio.Group>
                 </Form.Item>   
             </div>
@@ -578,11 +625,9 @@ return (
                 className='wrapp-each-item-form'
                 name="TipoDeAsesoria"
                 rules={[{ required: inputTasesoria, message: 'Elije una opcion' }]}
-                >
-                    
-                    <Radio.Group onChange={onChanges} isPaythisEvent={isPaythisEvent} value={values} options={tipoAsesoria} className='text-radio'>
-                            
-                    </Radio.Group>
+                >   
+                  <Radio.Group onChange={onChanges}  value={values} options={tipoAsesoria} className='text-radio'>           
+                  </Radio.Group>
                 </Form.Item>
                 
             </div>
@@ -646,16 +691,14 @@ return (
             
             
             <div className='wrapp-upload-content'>
-            
             <UploadFile URLimage={URLimage} />
-            
             <Oclusalinferior URLOclusalinferior={URLOclusalinferior}  />
             <FrontalSinAlineador URLFrontalSinAlineador={URLFrontalSinAlineador} />
             <FrontalConAlineador URLFrontalConAlineador={URLFrontalConAlineador} />
             <LateralDerechaOclusion URLLateralDerechaOclusion={URLLateralDerechaOclusion} />
             <LateralizquierdaOclusion URLLateralizquierdaOclusion={URLLateralizquierdaOclusion} />
             <PanoramicaCraneo URLPanoramicaCraneo={URLPanoramicaCraneo} />
-            <LateralCraneo URLLateralCraneo={URLLateralCraneo} />
+            { activeLateralCraneo && <LateralCraneo URLLateralCraneo={URLLateralCraneo} />}
             <AreaMotivoConsulta URLAreaMotivoConsulta={URLAreaMotivoConsulta} />
             </div>
             
@@ -668,26 +711,15 @@ return (
                 type="primary" 
                 htmlType="submit" 
                 loading={loadings[0] } 
-                
                 >
-                    Siguiente
+                  Siguiente
                 </Button>
             </Form.Item>
-
             </Form>
-
-          
             <div className={`${muestraCalendly}`}>
             <CalendlyOneWrapp />
-            </div>
-          
-         
-
-
-            
-        </div>
-
-        
+            </div> 
+        </div> 
     )
 }
 
